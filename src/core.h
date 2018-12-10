@@ -12,8 +12,12 @@
 
 #ifdef WIN32
     #define _OS_WIN      1
+#ifdef __LIBRETRO__
+    #define _GAPI_GL     1
+#else
     #define _GAPI_GL     1
     //#define _GAPI_D3D9   1
+#endif
     //#define _GAPI_VULKAN 1
     //#define _NAPI_SOCKET
 
@@ -584,7 +588,9 @@ namespace Core {
 
         void stop() {
             if (fpsTime < Core::getTime()) {
+#ifndef __LIBRETRO__
                 LOG("FPS: %d DIP: %d TRI: %d RT: %d\n", fps, dips, tris, rt);
+#endif
             #ifdef PROFILE
                 LOG("frame time: %d mcs\n", tFrame / 1000);
             #endif
@@ -742,6 +748,11 @@ namespace Core {
     #ifdef _OS_MAC
         settings.controls[0].keys[ cAction    ].key = ikS;
     #endif
+
+#ifdef __LIBRETRO__
+        settings.controls[0].keys[ cInventory ].key = ikTab;
+        settings.controls[0].keys[ cStart ].key     = ikEnter;
+#endif
 
     // use D key for jump in browsers
     #ifdef _OS_WEB

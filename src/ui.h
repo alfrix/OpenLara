@@ -607,11 +607,14 @@ namespace UI {
 
         if (showHelp) {
             textOut(vec2(32, 32), STR_HELP_TEXT, aLeft, width - 32, 255, UI::SHADE_GRAY);
-        } else {
+        }
+#ifndef __LIBRETRO__
+        else {
             if (helpTipTime > 0.0f) {
                 textOut(vec2(0, height - 32), STR_HELP_PRESS, aCenter, width, 255, UI::SHADE_ORANGE);
             }
         }
+#endif
     }
 
     void addPickup(TR::Entity::Type type, const vec2 &pos) {
